@@ -1,0 +1,27 @@
+HELP.md
+
+# Maven
+target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Eclipse / STS
+.project
+.classpath
+.settings/
+.sts4-cache/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db

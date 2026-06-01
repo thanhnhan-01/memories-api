@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/memories_db
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secret: secret
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000
