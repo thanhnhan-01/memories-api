@@ -1,11 +1,9 @@
-package com.memories.api.memories_api.feature.auth.repository;
+package com.memories.api.memories_api.feature.auth.user;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.memories.api.memories_api.feature.auth.entity.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 

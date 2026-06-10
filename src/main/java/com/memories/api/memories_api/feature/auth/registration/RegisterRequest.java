@@ -1,4 +1,4 @@
-package com.memories.api.memories_api.feature.auth.dto.request;
+package com.memories.api.memories_api.feature.auth.registration;
 
 public record RegisterRequest(
         String email,

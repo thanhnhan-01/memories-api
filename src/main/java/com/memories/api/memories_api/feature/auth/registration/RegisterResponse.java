@@ -1,4 +1,4 @@
-package com.memories.api.memories_api.feature.auth.dto.response;
+package com.memories.api.memories_api.feature.auth.registration;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.memories.api.memories_api.feature.auth.entity;
+package com.memories.api.memories_api.feature.auth.user;
 
 import java.util.UUID;
 
