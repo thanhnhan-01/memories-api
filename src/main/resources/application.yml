@@ -9,6 +9,6 @@ spring:
       ddl-auto: update
 
 jwt:
-  secret: secret
+  secret: pXVw377AEEQYZDfcrZ2lPxj66T2qyfr72WTZ1IXngi4=
   access-token-expiration: 900000
   refresh-token-expiration: 604800000

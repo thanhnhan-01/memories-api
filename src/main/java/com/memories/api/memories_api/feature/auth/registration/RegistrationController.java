@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,10 +19,8 @@ public class RegistrationController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public RegisterResponse register(
-            @RequestBody RegisterRequest request) {
-        return registrationService.register(
-                request);
+    public RegisterResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
+        return registrationService.register(registerRequest);
     }
 
 }
