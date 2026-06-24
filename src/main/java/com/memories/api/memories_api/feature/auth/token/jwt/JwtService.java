@@ -1,4 +1,4 @@
-package com.memories.api.memories_api.feature.auth.token;
+package com.memories.api.memories_api.feature.auth.token.jwt;
 
 import javax.crypto.SecretKey;
 

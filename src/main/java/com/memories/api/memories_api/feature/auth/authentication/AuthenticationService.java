@@ -7,7 +7,7 @@ import com.memories.api.memories_api.feature.auth.authentication.dto.AuthRespons
 import com.memories.api.memories_api.feature.auth.authentication.dto.LoginRequest;
 import com.memories.api.memories_api.feature.auth.authentication.dto.UserSummary;
 import com.memories.api.memories_api.feature.auth.exception.AuthException;
-import com.memories.api.memories_api.feature.auth.token.JwtService;
+import com.memories.api.memories_api.feature.auth.token.jwt.JwtService;
 import com.memories.api.memories_api.feature.auth.user.User;
 import com.memories.api.memories_api.feature.auth.user.UserRepository;
 
