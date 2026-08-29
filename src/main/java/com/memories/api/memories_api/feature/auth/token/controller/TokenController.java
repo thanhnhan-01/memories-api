@@ -1,10 +1,12 @@
 package com.memories.api.memories_api.feature.auth.token.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.memories.api.memories_api.feature.auth.token.refresh.dto.LogoutAllResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.LogoutResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenRequest;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenResponse;
@@ -27,10 +29,19 @@ public class TokenController {
     }
 
     @PostMapping("/logout")
-    public LogoutResponse logout(@RequestBody RefreshTokenRequest request) {
+    public LogoutAllResponse logout(@RequestBody RefreshTokenRequest request) {
         refreshTokenService.revoke(request.refreshToken());
 
-        return new LogoutResponse("Logout Successfully");
+        return new LogoutAllResponse("Logout Successfully");
+    }
+
+    @PostMapping("/logout-all")
+    public LogoutAllResponse logoutAll(Authentication authentication) {
+        String email = authentication.getName();
+
+        refreshTokenService.revokeAllByUser(email);
+
+        return new LogoutAllResponse("All sessions logged out successfully");
     }
 
 }

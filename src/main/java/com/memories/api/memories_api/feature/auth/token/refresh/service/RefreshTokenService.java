@@ -1,6 +1,7 @@
 package com.memories.api.memories_api.feature.auth.token.refresh.service;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import com.memories.api.memories_api.feature.auth.token.jwt.JwtService;
 import com.memories.api.memories_api.feature.auth.token.refresh.entity.RefreshToken;
 import com.memories.api.memories_api.feature.auth.token.refresh.repository.RefreshTokenRepository;
 import com.memories.api.memories_api.feature.auth.user.User;
+import com.memories.api.memories_api.feature.auth.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     public RefreshToken save(User user, String token, Instant expiresAt) {
@@ -57,11 +60,21 @@ public class RefreshTokenService {
     }
 
     public void revoke(String token) {
-
         RefreshToken storedToken = findByToken(token);
+
         storedToken.setRevoked(true);
 
         refreshTokenRepository.save(storedToken);
+    }
+
+    public void revokeAllByUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AuthException("User not found"));
+
+        List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByUser(user);
+
+        refreshTokens.forEach(refreshToken -> refreshToken.setRevoked(true));
+
+        refreshTokenRepository.saveAll(refreshTokens);
     }
 
 }
