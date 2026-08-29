@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.memories.api.memories_api.feature.auth.token.refresh.dto.LogoutResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenRequest;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.service.RefreshTokenService;
@@ -20,15 +21,16 @@ public class TokenController {
 
     @PostMapping("/refresh")
     public RefreshTokenResponse refresh(@RequestBody RefreshTokenRequest request) {
-
         String newAccessToken = refreshTokenService.refreshAccessToken(request.refreshToken());
 
         return new RefreshTokenResponse(newAccessToken);
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody RefreshTokenRequest request) {
+    public LogoutResponse logout(@RequestBody RefreshTokenRequest request) {
         refreshTokenService.revoke(request.refreshToken());
+
+        return new LogoutResponse("Logout Successfully");
     }
 
 }
