@@ -36,7 +36,8 @@ public class RefreshTokenService {
     }
 
     public RefreshToken findByToken(String token) {
-        return refreshTokenRepository.findByToken(token).orElseThrow();
+        return refreshTokenRepository.findByToken(token)
+                .orElseThrow(() -> new AuthException("Invalid refresh token"));
     }
 
     public boolean isValid(RefreshToken refreshToken) {
