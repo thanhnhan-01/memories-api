@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.LogoutAllResponse;
-import com.memories.api.memories_api.feature.auth.token.refresh.dto.LogoutResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenRequest;
 import com.memories.api.memories_api.feature.auth.token.refresh.dto.RefreshTokenResponse;
 import com.memories.api.memories_api.feature.auth.token.refresh.service.RefreshTokenService;
