@@ -1,6 +1,6 @@
 package com.memories.api.memories_api.feature.memory.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.memories.api.memories_api.core.persistence.BaseEntity;
@@ -41,7 +41,7 @@ public class Memory extends BaseEntity {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime memoryDate;
+    private LocalDate memoryDate;
 
     @Column
     private String location;

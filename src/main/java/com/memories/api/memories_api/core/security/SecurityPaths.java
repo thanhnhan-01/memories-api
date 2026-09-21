@@ -9,5 +9,6 @@ public class SecurityPaths {
             "/api/v1/auth/verify-email",
             "/api/v1/auth/verify-phone-number",
             "/api/v1/token/refresh",
+            "/api/v1/memories"
     };
 }
