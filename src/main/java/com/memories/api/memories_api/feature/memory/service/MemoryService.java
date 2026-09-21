@@ -11,6 +11,7 @@ import com.memories.api.memories_api.feature.memory.dto.CreateMemoryRequest;
 import com.memories.api.memories_api.feature.memory.dto.MemoryResponse;
 import com.memories.api.memories_api.feature.memory.dto.UpdateMemoryRequest;
 import com.memories.api.memories_api.feature.memory.entity.Memory;
+import com.memories.api.memories_api.feature.memory.exception.MemoryException;
 import com.memories.api.memories_api.feature.memory.repository.MemoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class MemoryService {
     @Transactional(readOnly = true)
     public MemoryResponse getById(UUID id, User user) {
         Memory memory = memoryRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Memory not found"));
+                .orElseThrow(() -> new MemoryException("Memory not found"));
 
         return toResponse(memory);
     }
@@ -57,7 +58,7 @@ public class MemoryService {
 
     public MemoryResponse update(UUID id, UpdateMemoryRequest request, User user) {
         Memory memory = memoryRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Memory not found"));
+                .orElseThrow(() -> new MemoryException("Memory not found"));
 
         if (request.title() != null) {
             memory.setTitle(request.title());
@@ -80,7 +81,7 @@ public class MemoryService {
 
     public void delete(UUID id, User user) {
         Memory memory = memoryRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Memory not found"));
+                .orElseThrow(() -> new MemoryException("Memory not found"));
 
         memoryRepository.delete(memory);
     }

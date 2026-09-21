@@ -16,16 +16,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.memories.api.memories_api.core.common.dto.ErrorResponse;
 import com.memories.api.memories_api.core.common.dto.ValidationErrorResponse;
 import com.memories.api.memories_api.feature.auth.exception.AuthException;
+import com.memories.api.memories_api.feature.memory.exception.MemoryException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
         @ExceptionHandler(AuthException.class)
         @ResponseStatus(HttpStatus.BAD_REQUEST)
-        public ErrorResponse handleAuthException(
-                        AuthException ex) {
+        public ErrorResponse handleAuthException(AuthException ex) {
                 return new ErrorResponse(
                                 HttpStatus.BAD_REQUEST.value(),
+                                ex.getMessage(),
+                                LocalDateTime.now());
+        }
+
+        @ExceptionHandler(MemoryException.class)
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        public ErrorResponse handleMemoryException(MemoryException ex) {
+                return new ErrorResponse(
+                                HttpStatus.NOT_FOUND.value(),
                                 ex.getMessage(),
                                 LocalDateTime.now());
         }
@@ -44,9 +53,7 @@ public class GlobalExceptionHandler {
 
         @ExceptionHandler(Exception.class)
         @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-        public ErrorResponse handleException(
-                        Exception ex) {
-
+        public ErrorResponse handleException(Exception ex) {
                 log.error("Unexpected error: ", ex);
 
                 return new ErrorResponse(
