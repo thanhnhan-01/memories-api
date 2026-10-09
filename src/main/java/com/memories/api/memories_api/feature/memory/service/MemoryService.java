@@ -1,17 +1,22 @@
 package com.memories.api.memories_api.feature.memory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.memories.api.memories_api.feature.auth.user.User;
 import com.memories.api.memories_api.feature.memory.dto.CreateMemoryRequest;
+import com.memories.api.memories_api.feature.memory.dto.MemoryImageResponse;
 import com.memories.api.memories_api.feature.memory.dto.MemoryResponse;
 import com.memories.api.memories_api.feature.memory.dto.UpdateMemoryRequest;
 import com.memories.api.memories_api.feature.memory.entity.Memory;
+import com.memories.api.memories_api.feature.memory.entity.MemoryImage;
 import com.memories.api.memories_api.feature.memory.exception.MemoryException;
+import com.memories.api.memories_api.feature.memory.repository.MemoryImageRepository;
 import com.memories.api.memories_api.feature.memory.repository.MemoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class MemoryService {
 
     private final MemoryRepository memoryRepository;
+    private final MemoryImageRepository memoryImageRepository;
+    private final FileStorageService fileStorageService;
 
     public MemoryResponse create(
             CreateMemoryRequest request, User user
@@ -84,6 +91,45 @@ public class MemoryService {
                 .orElseThrow(() -> new MemoryException("Memory not found"));
 
         memoryRepository.delete(memory);
+    }
+
+    public List<MemoryImageResponse> uploadImages(UUID memoryId, List<MultipartFile> files, User user) {
+
+        Memory memory = memoryRepository.findByIdAndUser(memoryId, user)
+                .orElseThrow(() -> new MemoryException("Memory not found"));
+
+        if (files == null || files.isEmpty()) {
+            throw new MemoryException("At least one image is required");
+        }
+
+        List<MemoryImageResponse> responses = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (file == null || file.isEmpty()) {
+                throw new MemoryException("Image file must not be empty");
+            }
+
+            String filePath = fileStorageService.storeImage(file);
+
+            MemoryImage image = MemoryImage.builder()
+                    .memory(memory)
+                    .fileName(file.getOriginalFilename())
+                    .filePath(filePath)
+                    .contentType(file.getContentType())
+                    .fileSize(file.getSize())
+                    .build();
+
+            MemoryImage savedImage = memoryImageRepository.save(image);
+
+            responses.add(new MemoryImageResponse(
+                    savedImage.getId(),
+                    savedImage.getFileName(),
+                    savedImage.getFilePath(),
+                    savedImage.getContentType(),
+                    savedImage.getFileSize()));
+        }
+
+        return responses;
     }
 
     private MemoryResponse toResponse(Memory memory) {

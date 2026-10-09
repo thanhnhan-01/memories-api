@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.memories.api.memories_api.core.common.dto.ErrorResponse;
 import com.memories.api.memories_api.core.common.dto.ValidationErrorResponse;
@@ -36,6 +37,15 @@ public class GlobalExceptionHandler {
                 return new ErrorResponse(
                                 HttpStatus.NOT_FOUND.value(),
                                 ex.getMessage(),
+                                LocalDateTime.now());
+        }
+
+        @ExceptionHandler(MissingServletRequestPartException.class)
+        @ResponseStatus(HttpStatus.BAD_REQUEST)
+        public ErrorResponse handleMissingServletRequestPart(MissingServletRequestPartException ex) {
+                return new ErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
+                                "Required multipart part is missing: " + ex.getRequestPartName(),
                                 LocalDateTime.now());
         }
 
